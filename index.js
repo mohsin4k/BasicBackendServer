@@ -1,23 +1,39 @@
 const mongoose = require("mongoose");
+const User = require("./models/User");
 
-const mongoURI = "mongodb+srv://mohsin_k:<qO9VBQHOlQOwaV7e>@cluster0.migeo4q.mongodb.net/?retryWrites=true&w=majority"
+const mongoURI = "mongodb+srv://mohsin_k:qO9VBQHOlQOwaV7e@cluster0.bdsz15t.mongodb.net/?retryWrites=true&w=majority"
 
 try{
     mongoose.connect(
-        mongoURI, 
+        mongoURI,
+        {
+            useNewUrlParser: true, 
+            useUnifiedTopology: true, 
+        }, 
         ()=>{
             console.log("mongodb connected");
         }
-        ).catch(e=>console.log(e));;
+        );;
 }catch(e){
     console.log(e); 
 }
-const User = require("./models/User");
-const user = new User({
-    Email: "mk@gmail.com", 
-    Password:"12345"
-});
 
-user.save().then(()=>{
-    console.log("Success");
-});
+async function createUser(newUser){
+    const user = new User(newUser); 
+
+    const data = await user.save(); 
+    console.log('data',data);
+}
+
+// createUser({
+//     email: "ff@gmail.com", 
+//     password: "2213"
+// }); 
+
+async function findUsers(){
+    const data = await User.find(); 
+
+    console.log(data);
+}
+
+findUsers();
